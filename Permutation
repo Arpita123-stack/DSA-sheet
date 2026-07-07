@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> sol = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        backtrack(nums, ans, sol, used);
+        return ans;
+    }
+
+    private void backtrack(int[] nums, List<List<Integer>> ans, List<Integer> sol, boolean[] used) {
+        // Base case: a complete permutation has been formed
+        if (sol.size() == nums.length) {
+            ans.add(new ArrayList<>(sol)); // Add a copy of the current solution
+            return;
+        }
+
+        // Recursive case: try all unused numbers
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) continue; // Skip if the number is already used in the current path
+
+            // Choose:
+            sol.add(nums[i]);
+            used[i] = true;
+
+            // Explore (recurse):
+            backtrack(nums, ans, sol, used);
+
+            // Un-choose (backtrack):
+            sol.remove(sol.size() - 1);
+            used[i] = false;
+        }
+    }
+}
